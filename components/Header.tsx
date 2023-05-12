@@ -1,9 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, type ViewStyle } from 'react-native';
 
 export interface HeaderProps {
 	title?: React.ReactNode;
 	action?: React.ReactNode;
+	style?: ViewStyle;
 }
 
 const style = StyleSheet.create({
@@ -35,10 +36,10 @@ const style = StyleSheet.create({
 });
 
 const Header = (props: HeaderProps) => {
-	const { title = <MindDumpTitle />, action } = props;
+	const { title = <MindDumpTitle />, action, style: rootStyle } = props;
 
 	return (
-		<View style={style.root}>
+		<View style={StyleSheet.compose(style.root, rootStyle)}>
 			{title}
 
 			<View style={style.actions}>
