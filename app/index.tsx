@@ -21,27 +21,7 @@ import { type Gif } from '../lib/giphy';
 
 const style = StyleSheet.create({
 	root: {
-		flexGrow: 1,
-	},
-	header: {
-		height: 52,
-		gap: 16,
-		paddingTop: 24,
-		paddingHorizontal: 24,
-		marginBottom: 16,
-		flexDirection: 'row',
-		alignItems: 'center',
-	},
-	headerTitle: {
-		flexDirection: 'row',
-		flexGrow: 1,
-	},
-	headerTitleRegular: {
-		fontSize: 20,
-	},
-	headerTitleBold: {
-		fontSize: 20,
-		fontWeight: 'bold',
+		flex: 1,
 	},
 
 	list: {

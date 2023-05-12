@@ -22,20 +22,17 @@ import { Gif, type GiphyResponse } from '../../lib/giphy';
 
 const style = StyleSheet.create({
 	root: {
-		flexGrow: 1,
-		flexShrink: 1,
+		flex: 1,
 	},
 
 	thingy: {
-		flexGrow: 1,
-		flexShrink: 1,
+		flex: 1,
 	},
 	list: {
 		padding: 16,
 	},
 	listLoading: {
-		flexGrow: 1,
-		flexShrink: 1,
+		flex: 1,
 		justifyContent: 'center',
 	},
 
@@ -46,8 +43,7 @@ const style = StyleSheet.create({
 	},
 
 	postDetails: {
-		flexGrow: 1,
-		flexShrink: 1,
+		flex: 1,
 		gap: 12,
 		paddingTop: 8,
 		paddingHorizontal: 24,
@@ -72,8 +68,7 @@ const style = StyleSheet.create({
 		padding: 12,
 		borderRadius: 6,
 		textAlignVertical: 'top',
-		flexGrow: 1,
-		flexShrink: 1,
+		flex: 1,
 	},
 });
 
