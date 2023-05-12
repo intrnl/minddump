@@ -139,7 +139,7 @@ const HomePage = () => {
 		const [result] = await exec(db, [
 			{
 				sql:
-					`SELECT id, datetime(created_at, 'localtime') AS created_at, title, giphy_id FROM notes WHERE title LIKE ?`,
+					`SELECT id, datetime(created_at, 'localtime') AS created_at, title, giphy_id FROM notes WHERE title LIKE ? ORDER BY id DESC`,
 				args: [`%${debouncedSearch}%`],
 			},
 		]);
