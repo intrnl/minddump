@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, type ViewStyle } from 'react-native';
+import { StyleSheet, Text, TextInput, View, type ViewStyle } from 'react-native';
 
 export interface HeaderProps {
 	title?: React.ReactNode;
@@ -20,7 +20,7 @@ const style = StyleSheet.create({
 
 	title: {
 		flexDirection: 'row',
-		flexGrow: 1,
+		flex: 1,
 	},
 	titleRegular: {
 		fontSize: 20,
@@ -32,6 +32,12 @@ const style = StyleSheet.create({
 
 	actions: {
 		marginRight: -10,
+		flexShrink: 1,
+	},
+
+	input: {
+		flexGrow: 1,
+		fontSize: 20,
 	},
 });
 
@@ -70,6 +76,19 @@ export const MindDumpTitle = () => {
 		<View style={style.title} accessibilityLabel='MindDump'>
 			<Text style={style.titleRegular}>Mind</Text>
 			<Text style={style.titleBold}>Dump</Text>
+		</View>
+	);
+};
+
+export const SearchTitle = ({ value, onValueChange }: { value: string; onValueChange: (next: string) => void }) => {
+	return (
+		<View style={style.title}>
+			<TextInput
+				placeholder='Search'
+				value={value}
+				onChangeText={onValueChange}
+				style={style.input}
+			/>
 		</View>
 	);
 };

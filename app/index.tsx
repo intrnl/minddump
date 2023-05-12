@@ -1,5 +1,7 @@
-import { Link, Stack } from 'expo-router';
+import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+
+import { Link, Stack } from 'expo-router';
 
 import { MasonryFlashList } from '@shopify/flash-list';
 import { ActivityIndicator, FAB, IconButton } from 'react-native-paper';
@@ -8,9 +10,10 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { format as formatDate } from 'date-fns';
 
 import useSWR from 'swr';
+import { useDebounce } from 'usehooks-ts';
 
 import CachedImage from '../components/CachedImage';
-import Header from '../components/Header';
+import Header, { SearchTitle } from '../components/Header';
 
 import { connect } from '../lib/database';
 import { exec } from '../lib/database-utils';
@@ -125,13 +128,19 @@ const GifPreview = ({ giphyId }: { giphyId: string }) => {
 const HomePage = () => {
 	const inset = useSafeAreaInsets();
 
-	const { data } = useSWR('posts', async () => {
+	const [isSearching, setIsSearching] = React.useState(false);
+	const [search, setSearch] = React.useState('');
+
+	const debouncedSearch = useDebounce(search, 500);
+
+	const { data } = useSWR(`posts?q=${debouncedSearch}`, async () => {
 		const db = await connect();
 
 		const [result] = await exec(db, [
 			{
-				sql: `SELECT id, datetime(created_at, 'localtime') as created_at, title, giphy_id FROM notes`,
-				args: [],
+				sql:
+					`SELECT id, datetime(created_at, 'localtime') AS created_at, title, giphy_id FROM notes WHERE title LIKE ?`,
+				args: [`%${debouncedSearch}%`],
 			},
 		]);
 
@@ -143,9 +152,35 @@ const HomePage = () => {
 		<View style={StyleSheet.compose(style.root, { marginTop: inset.top })}>
 			<Stack.Screen options={{ title: 'Home' }} />
 
-			<Header
-				action={<IconButton icon='magnify' accessibilityLabel='Search' onPress={() => {}} />}
-			/>
+			{isSearching
+				? (
+					<Header
+						title={<SearchTitle value={search} onValueChange={setSearch} />}
+						action={
+							<IconButton
+								key='close'
+								icon='close'
+								accessibilityLabel='Cancel search'
+								onPress={() => {
+									setIsSearching(false);
+									setSearch('');
+								}}
+							/>
+						}
+					/>
+				)
+				: (
+					<Header
+						action={
+							<IconButton
+								key='search'
+								icon='magnify'
+								accessibilityLabel='Search'
+								onPress={() => setIsSearching(true)}
+							/>
+						}
+					/>
+				)}
 
 			<Link href='/post/create' asChild>
 				<FAB icon='plus' label='MindDump' style={style.fab} />
