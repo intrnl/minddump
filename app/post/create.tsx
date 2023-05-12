@@ -7,7 +7,6 @@ import { ActivityIndicator, Button } from 'react-native-paper';
 import { IconButton } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { mutate } from 'swr';
 import useSWRInfinite from 'swr/infinite';
 import useMutation from 'use-mutation';
 import { useDebounce } from 'usehooks-ts';
@@ -246,10 +245,7 @@ const PostDetailsSection = (props: { gif: Gif; onCancel?: () => void }) => {
 
 	const router = useRouter();
 	const [dispatch, { status }] = useMutation(createPost, {
-		async onSuccess () {
-			// Mutate the posts key so we get the latest one
-			await mutate('posts');
-
+		onSuccess () {
 			router.back();
 		},
 	});

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { Link, Stack } from 'expo-router';
+import { Link, Stack, useFocusEffect } from 'expo-router';
 
 import { MasonryFlashList } from '@shopify/flash-list';
 import { ActivityIndicator, FAB, IconButton } from 'react-native-paper';
@@ -133,7 +133,7 @@ const HomePage = () => {
 
 	const debouncedSearch = useDebounce(search, 500);
 
-	const { data } = useSWR(`posts?q=${debouncedSearch}`, async () => {
+	const { data, mutate } = useSWR(`posts?q=${debouncedSearch}`, async () => {
 		const db = await connect();
 
 		const [result] = await exec(db, [
@@ -147,6 +147,10 @@ const HomePage = () => {
 		const rows = result.rows as ({ id: number; created_at: number; title: string; giphy_id: string })[];
 		return rows;
 	});
+
+	useFocusEffect(React.useCallback(() => {
+		mutate();
+	}, []));
 
 	return (
 		<View style={StyleSheet.compose(style.root, { marginTop: inset.top })}>
